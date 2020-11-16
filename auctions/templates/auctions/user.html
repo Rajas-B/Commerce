@@ -1,0 +1,48 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<div class="container">
+  <h2>{{ user.username }}</h2>
+  <p>Random info</p>
+  <hr>
+  <ul class="nav">
+    <li class="nav-item"><a class="nav-link" href="#listings"># Your listings</a></li>
+    <li class="nav-item"><a class="nav-link" href="#bids"># Your bids</a></li>
+  </ul>
+  <hr>
+  <h4 id="listings">Your active listings</h4>
+  <div class="row">
+    {% for product in products %}
+    <div class="col-sm-5">
+      <img src="{{ product.image }}" class="img1"/>
+    </div>
+    <div class="col-sm-7">
+      <h3>{{ product.name }}</h3>
+      <p>Base price: {{ product.baseprice }}$</p>
+      <p>{{ product.description }}</p>
+      <a href="{% url 'prod1' product.id %}">Go to the listing page</a>
+    </div>
+    {% endfor %}
+  </div>
+  <hr>
+  <h4 id="bids">Your active bids:</h4>
+  <div class="row">
+    {% for bid in bids %}
+    <div class="col-sm-5">
+      <img src="{{ bid.prod_id.image }}" class="img1"/>
+    </div>
+    <div class="col-sm-7">
+      <h3>{{ bids.prod_id.name }}</h3>
+      <p>Base price: {{ bid.prod_id.baseprice }}$</p>
+      <p>You placed your bid at : {{ bid.amount }}$</p>
+      {% if not bid.prod_id.active %}
+      <p>Auction has been closed</p>
+      {% else %}
+      {% endif %}
+      <a href="{% url 'prod1' bid.prod_id.id %}">Go to the listing page</a>
+    </div>
+    {% endfor %}
+    </div>
+  <hr>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<div class="padd">
+  <h2>Active Listings</h2>
+  <hr>
+    {% for product in products %}
+      <div class="row border padd">
+        <div class="col-sm-5">
+          <img src="{{ product.image }}" class="img1"/>
+        </div>
+        <div class="col-sm-7">
+          <a href="{% url 'prod1' product.id %}">{{ product.name }}</a>
+          <p>{{ product.category }}</p>
+          <p>{{ product.baseprice }} $</p>
+        </div>
+      </div>
+    </div>
+
+    {% endfor %}
+{% endblock %}

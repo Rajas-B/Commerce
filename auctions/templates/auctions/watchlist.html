@@ -1,0 +1,20 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<div class="container">
+  <h2>Your watchlist</h2>
+  <hr>
+  <div class="row">
+    {% for product in user_watchlist %}
+    <div class="col-sm-5">
+      <img src="{{ product.product_id.image }}" class="img1"/>
+    </div>
+    <div class="col-sm-7">
+      <h3>{{ product.product_id.name }}</h3>
+      <p>Base price: {{ product.product_id.baseprice }}$</p>
+      <a href="{% url 'prod1' product.product_id.id %}">Go to the listing page</a>
+    </div>
+    <hr>
+    {% endfor %}
+  </div>
+{% endblock %}

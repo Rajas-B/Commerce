@@ -1,0 +1,27 @@
+.padd {
+    padding: 10px;
+}
+.img1{
+  width: 300px;
+  height: auto;
+}
+.frm1{
+  float: left;
+}
+.input1 {
+  position: inherit;
+}
+.img2{
+  width: 500px;
+  height: auto;
+  position: relative;
+}
+.fit{
+  position: relative;
+}
+.test1{
+  float: right;
+}
+.endauc{
+  float:right;
+}

@@ -1,0 +1,147 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<div class="padd border">
+<div class="row">
+  <div class="col-5 ">
+    <img src="{{ product.image }}" class="img2"/>
+  </div>
+  <div class="col-7 fit">
+    <h3>{{ product.name }}</h3>
+    <strong>Owner: {{ product.uid.username }}</strong>
+    <p>Base price: {{ product.baseprice }}$</p>
+    <p>{{ product.description }}</p>
+    <small>Listing created on: {{ product.date }}</small>
+    {% if user.is_authenticated %}
+    {% if watchlist is None %}
+        <form style="float: right;" action="{% url 'prod1' product.id %}" method="post">
+        {% csrf_token %}
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <div class="form-row">
+        <div class="form-group">
+          <input class="btn btn-primary" type="Submit" name="add_to_watch" value="Add to watchlist" />
+        </div>
+        </div>
+        <small>{{ message3 }}</small>
+        </form>
+    {% else %}
+      <form style="float: right;" action="{% url 'prod1' product.id %}" method="post">
+      {% csrf_token %}
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <div class="form-row">
+      <div class="form-group">
+        <input class="btn btn-primary" type="Submit" name="remove_from_watch" value="Remove from watchlist" />
+      </div>
+      </div>
+      <small>{{ message3 }}</small>
+      </form>
+    {% endif %}
+    {% endif %}
+  </div>
+</div>
+<hr>
+<h4>Starting price: {{ product.baseprice }}$</h4>
+{% if product.active %}
+{% if user.is_authenticated %}
+{% if user != product.uid %}
+<form action="{% url 'prod1' product.id %}" method="post">
+  {% csrf_token %}
+    {% if my_bid is not None %}
+      <p>You placed your bid at: {{ my_bid.amount }}$</p>
+      <div class="form-row">
+      <div class="form-group">
+        <input class="form-control" type="number" min="{{ product.baseprice }}" name="increased_bid" placeholder="Enter your new bid" />
+      </div>
+      </div>
+      <small>You cannot go below current price</small>
+      <div class="form-row">
+      <div class="form-group"><br>
+        <input class="btn btn-primary" name="increase_bid" type="Submit" value="Increase bid" />
+      </div>
+      </div>
+      <p>{{ message1 }}</p>
+    </form>
+    {% else %}
+    <form action="{% url 'prod1' product.id %}" method="post">
+    <div class="form-row">
+    <div class="form-group">
+      <input class="form-control" type="number" min="{{ product.baseprice }}" name="bid_amount" placeholder="Enter your bid" />
+    </div>
+    <div class="form-group">
+      <input class="btn btn-primary" name="place_bid" type="submit" value="Place bid" />
+    </div>
+    </div>
+    <p>{{ message1 }}
+    </form>
+    {% endif %}
+{% endif %}
+{% else %}
+  <p><a href="{% url 'login' %}">Log in</a>/<a href="{% url 'register' %}">Register</a> to place a bid</p>
+{% endif %}
+<div class="row padd">
+  <div class="col">
+    <h4>Other bids:</h4>
+    <ul>
+    {% for bidder in bidders %}
+    <li><strong>{{ bidder.user_id.username }}</strong><br>
+    <p>Bid placed at: {{ bidder.amount }}$</p></li>
+    {% endfor %}
+    </ul>
+  </div>
+</div>
+{% if user == product.uid %}
+<form action="{% url 'prod1' product.id %}" method="post">
+  {% csrf_token %}
+    <div class="form-group endauc">
+      <input class="btn btn-danger" type="Submit" name="close_bid" value="End auction">
+      <p>Highest bidder wins</p>
+    </div>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+</form>
+{% endif %}
+<hr>
+
+{% if user.is_authenticated %}
+<form action = "{% url 'prod1' product.id %}" method="post">
+  {% csrf_token %}
+  <div class="form-row align-items-center">
+  <div class="col-auto my-1">
+    <strong>{{ user.username }}:</strong>
+  </div>
+  <div class="col-sm-9 my-1">
+    <label class="sr-only" for="usercomment">Name</label>
+    <input type="text" name="prod_comment" class="form-control" id="usercomment" placeholder="Add a comment">
+  </div>
+  <div class="col-auto my-1">
+    <button type="submit" name="post_comment" class="btn btn-primary">Submit</button>
+  </div>
+  <div class="col-auto my-1">
+    <p>{{ message2 }}</p>
+  </div>
+</div>
+</form>
+{% else %}
+<p><a href="{% url 'login' %}">Log in</a>/<a href="{% url 'register' %}">Register</a> to post a comment</p>
+{% endif %}
+<div class="row padd">
+  <div class="col">
+    {% for a_comment in comments %}
+      <strong>{{ a_comment.user_id.username }}</strong>
+      <p>{{ a_comment.comment }}</p>
+      <hr>
+    {% endfor %}
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="row padd">
+  <div class="col">
+    <h4>{{ highest_bidder.user_id.username }} won!</h4>
+    <strong>{{ highest_bidder.amount }}$</strong>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

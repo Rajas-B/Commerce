@@ -1,0 +1,15 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<div class="container">
+  <ul>
+    <li><a href="{% url 'categoryprods' 'Mobiles, Tablets' %}">Mobiles, Tablets</li>
+    <li><a href="{% url 'categoryprods' 'Cookware' %}">Cookware</li>
+    <li><a href="{% url 'categoryprods' 'Kitchen appliances' %}">Kitchen appliances</li>
+    <li><a href="{% url 'categoryprods' 'Power tools' %}">Power tools</li>
+    <li><a href="{% url 'categoryprods' 'Books' %}">Books</li>
+    <li><a href="{% url 'categoryprods' 'Electrical appliances' %}">Electrical appliances</li>
+    <li><a href="{% url 'categoryprods' 'Miscellaneous' %}">Miscellaneous</li>
+  </ul>
+</div>
+{% endblock %}
